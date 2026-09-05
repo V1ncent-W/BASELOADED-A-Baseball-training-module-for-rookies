@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Baseloaded</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="boot-screen" aria-label="Baseloaded 启动界面">
+      <div class="upper-field-grid" aria-hidden="true"></div>
+      <div class="stadium-grid" aria-hidden="true"></div>
+      <div class="scanlines" aria-hidden="true"></div>
+
+      <section class="intro" aria-hidden="true">
+        <div class="ball-trails">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="baseball">
+          <span class="stitch stitch-left"></span>
+          <span class="stitch stitch-right"></span>
+        </div>
+        <div class="impact-flash"></div>
+        <div class="impact-hole"></div>
+        <div class="impact">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="glass-burst">
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
+        </div>
+      </section>
+
+      <section class="title-reveal" aria-label="游戏标题">
+        <p class="label">BASEBALL GAME</p>
+        <h1 class="game-title" aria-label="BASELOADED">
+          <span class="title-face">BASELOADED</span>
+        </h1>
+      </section>
+
+      <section class="start-menu" aria-label="开始菜单">
+        <div class="diamond" aria-hidden="true">
+          <span class="base top"></span>
+          <span class="base right"></span>
+          <span class="base bottom"></span>
+          <span class="base left"></span>
+          <span class="mound"></span>
+        </div>
+
+        <nav class="menu-actions" aria-label="游戏模式">
+          <button type="button" data-mode="practice">
+            <span class="cursor" aria-hidden="true"></span>
+            场面练习
+          </button>
+          <button type="button" data-mode="rules">
+            <span class="cursor" aria-hidden="true"></span>
+            规则学习
+          </button>
+        </nav>
+      </section>
+
+      <section class="difficulty-screen difficulty-practice" aria-label="难度选择" hidden>
+        <button class="back-button" type="button" aria-label="返回主菜单">
+          <span aria-hidden="true">←</span>
+          返回
+        </button>
+
+        <div class="coach-panel">
+          <div class="coach-sprite" aria-hidden="true">
+            <span class="cap"></span>
+            <span class="cap-letter">R</span>
+            <span class="head"></span>
+            <span class="mask"></span>
+            <span class="body"></span>
+            <span class="arm arm-left"></span>
+            <span class="arm arm-right"></span>
+            <span class="legs"></span>
+          </div>
+          <div class="speech-box">
+            <p data-role-speech>欢迎来到场面练习。</p>
+          </div>
+        </div>
+
+        <nav class="difficulty-actions" aria-label="选择难度">
+          <button type="button" data-difficulty="low">
+            <span class="cursor" aria-hidden="true"></span>
+            低级难度
+          </button>
+          <button type="button" data-difficulty="mid">
+            <span class="cursor" aria-hidden="true"></span>
+            中级难度
+          </button>
+          <button type="button" data-difficulty="high">
+            <span class="cursor" aria-hidden="true"></span>
+            高级难度
+          </button>
+        </nav>
+      </section>
+
+      <section class="quiz-screen" aria-label="题目界面" hidden>
+        <button class="quiz-back-button" type="button" aria-label="返回难度选择">
+          <span aria-hidden="true">←</span>
+          返回
+        </button>
+
+        <div class="play-panel">
+          <div class="play-field" aria-label="棒球场场面模拟">
+            <svg class="field-fan" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+              <path class="fan-grass" d="M50 92 L8 16 A70 70 0 0 1 92 16 Z" />
+              <path class="fan-arc arc-deep" d="M20 38 A48 48 0 0 1 80 38" />
+              <path class="fan-arc arc-mid" d="M30 56 A30 30 0 0 1 70 56" />
+              <path class="fan-line" d="M50 92 L8 16" />
+              <path class="fan-line" d="M50 92 L92 16" />
+            </svg>
+            <div class="field-diamond">
+              <span class="field-base home"></span>
+              <span class="field-base first"></span>
+              <span class="field-base second"></span>
+              <span class="field-base third"></span>
+              <span class="field-mound"></span>
+            </div>
+            <div class="field-players" data-field-players></div>
+            <span class="ball-path"></span>
+            <div class="keyframe-badge">KEY FRAME</div>
+            <button class="replay-field-button" type="button">重播</button>
+          </div>
+
+          <div class="quiz-mentor">
+            <div class="coach-sprite" aria-hidden="true">
+              <span class="cap"></span>
+              <span class="cap-letter">R</span>
+              <span class="head"></span>
+              <span class="mask"></span>
+              <span class="body"></span>
+              <span class="arm arm-left"></span>
+              <span class="arm arm-right"></span>
+              <span class="legs"></span>
+            </div>
+            <div class="quiz-speech-box">
+              <p data-quiz-speech>看清场面，再做选择。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="question-panel">
+          <p class="question-meta" data-question-meta>低级 1/100</p>
+          <h2 data-question-title>题目加载中</h2>
+          <div class="answer-actions" data-answer-actions></div>
+          <button class="next-question-button" type="button" hidden>下一题</button>
+        </div>
+      </section>
+
+      <div class="pass-transition" aria-hidden="true">
+        <div class="pass-lines">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="pass-ball">
+          <span class="stitch stitch-left"></span>
+          <span class="stitch stitch-right"></span>
+        </div>
+      </div>
+
+      <p class="producer-credit">1centw producted</p>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
