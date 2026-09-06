@@ -66,7 +66,7 @@ button {
     linear-gradient(180deg, #2f6c44 0, #214b31 100%);
   clip-path: polygon(0 44%, 100% 18%, 100% 100%, 0 100%);
   opacity: 0;
-  animation: fieldIn 650ms steps(5, end) 4080ms forwards;
+  animation: none;
   z-index: -4;
 }
 
@@ -80,7 +80,7 @@ button {
     linear-gradient(180deg, var(--grass) 0, var(--grass-dark) 100%);
   clip-path: polygon(0 34%, 100% 0, 100% 100%, 0 100%);
   opacity: 0;
-  animation: fieldIn 650ms steps(5, end) 4080ms forwards;
+  animation: none;
   z-index: -3;
 }
 
@@ -112,7 +112,7 @@ button {
   inset: 0;
   z-index: 8;
   pointer-events: none;
-  animation: introOut 460ms steps(4, end) 2800ms forwards;
+  animation: none;
 }
 
 .ball-trails {
@@ -123,7 +123,7 @@ button {
   height: 17vh;
   opacity: 0;
   transform: skewX(-16deg);
-  animation: trailFlight 1180ms steps(8, end) 180ms forwards;
+  animation: none;
 }
 
 .ball-trails span {
@@ -166,9 +166,7 @@ button {
     calc(var(--pixel) * 2) calc(var(--pixel) * 2) 0 #000,
     0 0 0 calc(var(--pixel) * 3) rgba(255, 255, 255, 0.08);
   image-rendering: pixelated;
-  animation:
-    ballFlight 1500ms cubic-bezier(0.14, 0.72, 0.22, 1) 180ms forwards,
-    ballImpactVibe 160ms steps(2, end) 1680ms 3;
+  animation: none;
   z-index: 4;
 }
 
@@ -203,7 +201,7 @@ button {
   background: var(--ink);
   opacity: 0;
   clip-path: polygon(50% 0, 58% 35%, 100% 16%, 66% 50%, 100% 84%, 58% 65%, 50% 100%, 42% 65%, 0 84%, 34% 50%, 0 16%, 42% 35%);
-  animation: impactFlash 460ms steps(4, end) 1540ms forwards;
+  animation: none;
   z-index: 6;
 }
 
@@ -220,8 +218,60 @@ button {
   text-transform: lowercase;
   text-shadow: 2px 2px 0 #000;
   opacity: 0;
-  animation: creditIn 420ms steps(4, end) 4300ms forwards;
+  animation: none;
   pointer-events: none;
+}
+
+.boot-screen.is-live .upper-field-grid {
+  animation: fieldIn 650ms steps(5, end) 4080ms forwards;
+}
+
+.boot-screen.is-live .stadium-grid {
+  animation: fieldIn 650ms steps(5, end) 4080ms forwards;
+}
+
+.boot-screen.is-live .intro {
+  animation: introOut 460ms steps(4, end) 2800ms forwards;
+}
+
+.boot-screen.is-live .ball-trails {
+  animation: trailFlight 1180ms steps(8, end) 180ms forwards;
+}
+
+.boot-screen.is-live .baseball {
+  animation:
+    ballFlight 1500ms cubic-bezier(0.14, 0.72, 0.22, 1) 180ms forwards,
+    ballImpactVibe 160ms steps(2, end) 1680ms 3;
+}
+
+.boot-screen.is-live .impact-flash {
+  animation: impactFlash 460ms steps(4, end) 1540ms forwards;
+}
+
+.boot-screen.is-live .impact-hole {
+  animation: holeIn 980ms steps(5, end) 1620ms forwards;
+}
+
+.boot-screen.is-live .impact {
+  animation: crackIn 1180ms steps(7, end) 1600ms forwards;
+}
+
+.boot-screen.is-live .glass-burst {
+  animation: shards 980ms steps(6, end) 1600ms forwards;
+}
+
+.boot-screen.is-live .title-reveal {
+  animation:
+    titleIn 700ms steps(7, end) 2060ms forwards,
+    titleLift 620ms steps(6, end) 3450ms forwards;
+}
+
+.boot-screen.is-live .start-menu {
+  animation: menuIn 520ms steps(6, end) 4250ms forwards;
+}
+
+.boot-screen.is-live .producer-credit {
+  animation: creditIn 420ms steps(4, end) 4300ms forwards;
 }
 
 .impact-hole {
@@ -238,7 +288,7 @@ button {
     calc(var(--pixel) * 2) calc(var(--pixel) * 2) 0 rgba(255, 255, 255, 0.34);
   opacity: 0;
   clip-path: polygon(50% 0, 66% 16%, 92% 17%, 83% 45%, 100% 64%, 71% 73%, 61% 100%, 42% 78%, 16% 90%, 22% 61%, 0 43%, 29% 35%);
-  animation: holeIn 980ms steps(5, end) 1620ms forwards;
+  animation: none;
   z-index: 5;
 }
 
@@ -250,7 +300,7 @@ button {
   aspect-ratio: 1;
   translate: -50% -50%;
   opacity: 0;
-  animation: crackIn 1180ms steps(7, end) 1600ms forwards;
+  animation: none;
   z-index: 4;
 }
 
@@ -293,7 +343,7 @@ button {
   aspect-ratio: 1;
   translate: -50% -50%;
   opacity: 0;
-  animation: shards 980ms steps(6, end) 1600ms forwards;
+  animation: none;
   z-index: 7;
 }
 
@@ -316,33 +366,31 @@ button {
 
 .title-reveal {
   position: absolute;
-  inset: 0;
+  left: 46.8%;
+  top: 46.8%;
+  width: min(92vw, 860px);
+  transform: translate(-50%, 4px);
   display: grid;
   justify-items: center;
   align-content: center;
   gap: clamp(18px, 3vh, 34px);
-  padding: 24px;
+  padding: 24px 0;
   text-align: center;
   pointer-events: none;
   opacity: 0;
-  transform: translate(-2.3vw, 18px);
-  animation:
-    titleIn 700ms steps(7, end) 2060ms forwards,
-    titleLift 620ms steps(6, end) 3450ms forwards;
+  animation: none;
   z-index: 10;
 }
 
 .label {
   margin: 0;
   width: 100%;
-  max-width: 1040px;
   color: var(--muted);
   font-size: clamp(0.62rem, 1.6vw, 1rem);
   letter-spacing: 0;
   font-family: var(--arcade-font);
   text-align: center;
   text-shadow: 3px 3px 0 #000;
-  transform: translateX(0.25vw);
 }
 
 .game-title {
@@ -350,7 +398,6 @@ button {
   display: block;
   margin: 0;
   width: 100%;
-  max-width: 1040px;
   color: var(--ink);
   font-family: var(--arcade-font);
   font-size: clamp(3.8rem, 10.5vw, 9.4rem);
@@ -413,6 +460,17 @@ button {
 
 .start-menu.is-returning {
   animation: menuReturn 360ms steps(4, end) forwards;
+}
+
+.boot-screen.is-subscreen .menu-actions {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.boot-screen.is-subscreen .diamond {
+  opacity: 0;
+  visibility: hidden;
 }
 
 .diamond {
@@ -538,6 +596,7 @@ button {
   min-height: 100vh;
   min-height: 100svh;
   padding: clamp(96px, 14vh, 150px) min(7vw, 92px) clamp(58px, 7vh, 86px);
+  background: transparent;
   opacity: 0;
   transform: translateY(22px);
 }
@@ -850,6 +909,7 @@ button {
   min-height: 100vh;
   min-height: 100svh;
   padding: clamp(112px, 15vh, 148px) min(6vw, 72px) clamp(48px, 6vh, 72px);
+  background: transparent;
   opacity: 0;
   transform: translateY(22px);
 }
@@ -1453,13 +1513,13 @@ button {
 @keyframes titleIn {
   to {
     opacity: 1;
-    transform: translate(-2.3vw, 0);
+    transform: translate(-50%, 0);
   }
 }
 
 @keyframes titleLift {
   to {
-    transform: translate(-2.3vw, -31vh) scale(0.58);
+    transform: translate(-50%, -31vh) scale(0.58);
   }
 }
 
@@ -1612,17 +1672,18 @@ button {
 
   .title-reveal {
     gap: 14px;
-    transform: translate(-1.5vw, 18px);
+    width: min(94vw, 420px);
+    left: 46.6%;
+    top: 46%;
+    transform: translate(-50%, 4px);
   }
 
   .label {
-    max-width: 96vw;
-    transform: translateX(0.12vw);
+    font-size: clamp(0.54rem, 2.5vw, 0.78rem);
   }
 
   .game-title {
-    max-width: 96vw;
-    font-size: clamp(2.35rem, 11.5vw, 4.6rem);
+    font-size: clamp(2.25rem, 11.2vw, 4.2rem);
   }
 
   .start-menu {
@@ -1652,6 +1713,7 @@ button {
     width: 100%;
     min-height: 100vh;
     min-height: 100svh;
+    align-content: start;
     padding: 84px 18px 48px;
   }
 
@@ -1708,6 +1770,7 @@ button {
   .quiz-screen {
     grid-template-columns: 1fr;
     gap: 18px;
+    align-content: start;
     padding: 102px 16px 42px;
     overflow-y: auto;
   }
@@ -1723,12 +1786,16 @@ button {
   }
 
   .play-panel {
-    grid-template-rows: minmax(240px, 36vh) auto;
+    width: min(100%, 620px);
+    margin-inline: auto;
+    grid-template-rows: auto auto;
     gap: 16px;
   }
 
   .play-field {
-    min-height: 240px;
+    width: 100%;
+    min-height: 0;
+    aspect-ratio: 1.24;
   }
 
   .field-player {
@@ -1739,6 +1806,7 @@ button {
   .quiz-mentor {
     grid-template-columns: 86px 1fr;
     gap: 12px;
+    align-items: center;
   }
 
   .quiz-mentor .coach-sprite {

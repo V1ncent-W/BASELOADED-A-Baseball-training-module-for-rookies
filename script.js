@@ -34,6 +34,7 @@ let renderedOptions = [];
 let answerLocked = false;
 let explanationReady = false;
 let explanationShown = false;
+let viewportRefreshTimer = null;
 
 const difficultyNames = { low: "低级", mid: "中级", high: "高级" };
 const modeNames = { practice: "场面练习", rules: "规则学习" };
@@ -425,6 +426,24 @@ function selectButton(buttons, index) {
   });
 }
 
+function armBootSequence() {
+  bootScreen.classList.remove("is-live");
+  void bootScreen.offsetWidth;
+  window.requestAnimationFrame(() => {
+    bootScreen.classList.add("is-live");
+  });
+}
+
+function refreshResponsiveScene() {
+  if (activeView !== "quiz" || !activeQuestion) return;
+  renderField(activeQuestion);
+}
+
+function scheduleResponsiveRefresh() {
+  window.clearTimeout(viewportRefreshTimer);
+  viewportRefreshTimer = window.setTimeout(refreshResponsiveScene, 120);
+}
+
 function runPassTransition(callback) {
   if (isTransitioning) return;
   isTransitioning = true;
@@ -459,8 +478,8 @@ function setDifficultyMode(mode) {
 function showDifficulty(mode) {
   setDifficultyMode(mode);
   activeView = "difficulty";
+  bootScreen.classList.add("is-subscreen");
   startMenu.classList.add("is-leaving");
-  startMenu.hidden = true;
   difficultyScreen.hidden = false;
   difficultyScreen.classList.remove("is-leaving");
   void difficultyScreen.offsetWidth;
@@ -470,6 +489,7 @@ function showDifficulty(mode) {
 
 function showStart() {
   activeView = "start";
+  bootScreen.classList.remove("is-subscreen");
   difficultyScreen.classList.remove("is-visible");
   difficultyScreen.classList.add("is-leaving");
   quizScreen.hidden = true;
@@ -606,6 +626,7 @@ function enterQuiz(difficulty) {
   currentQuestionIndex = 0;
   randomizedQuestions = shuffle(questionBank[selectedMode][difficulty]);
   activeView = "quiz";
+  bootScreen.classList.add("is-subscreen");
   difficultyScreen.classList.add("is-leaving");
   quizScreen.hidden = false;
   quizScreen.classList.remove("is-leaving");
@@ -678,6 +699,15 @@ quizSpeechBox.addEventListener("click", showExplanation);
 replayFieldButton.addEventListener("click", replayFieldAnimation);
 nextQuestionButton.addEventListener("click", nextQuestion);
 
+window.addEventListener("resize", scheduleResponsiveRefresh);
+window.addEventListener("orientationchange", scheduleResponsiveRefresh);
+window.addEventListener("pageshow", (event) => {
+  if (event.persisted) {
+    armBootSequence();
+  }
+  scheduleResponsiveRefresh();
+});
+
 document.addEventListener("keydown", (event) => {
   if (isTransitioning) return;
 
@@ -723,3 +753,4 @@ document.addEventListener("keydown", (event) => {
 selectButton(startButtons, selectedStartIndex);
 selectButton(difficultyButtons, selectedDifficultyIndex);
 setDifficultyMode(selectedMode);
+armBootSequence();
