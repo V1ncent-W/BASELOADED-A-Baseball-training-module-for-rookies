@@ -7,7 +7,7 @@
 ## 别担心“BASELOADED”来拯救你⚠️
 项目精选600道场面/规则题，包含场面动画和答案解读，帮助新队员快速上手棒垒球，降低规则门槛，助力你快速达到上场比赛的水平。
 
-项目已部署至：https://v1ncent-w.github.io/BASELOADED-A-Baseball-training-module-for-rookies/（浏览器打开即可）
+项目已部署至：https://v1ncent-w.github.io/BASELOADED-A-Baseball-training-module-for-rookies/    （浏览器打开即可）
 
 开源至：https://github.com/V1ncent-W/BASELOADED-A-Baseball-training-module-for-rookies
 
