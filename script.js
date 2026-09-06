@@ -19,6 +19,7 @@ const nextQuestionButton = document.querySelector(".next-question-button");
 
 const startButtons = Array.from(document.querySelectorAll(".menu-actions button"));
 const difficultyButtons = Array.from(document.querySelectorAll(".difficulty-actions button"));
+const mobileLayoutQuery = window.matchMedia("(max-width: 760px)");
 
 let activeView = "start";
 let selectedStartIndex = 0;
@@ -35,6 +36,12 @@ let answerLocked = false;
 let explanationReady = false;
 let explanationShown = false;
 let viewportRefreshTimer = null;
+let fieldReplayTimer = null;
+
+const stageLayouts = {
+  desktop: { width: 1280, height: 720 },
+  mobile: { width: 720, height: 1280 },
+};
 
 const difficultyNames = { low: "低级", mid: "中级", high: "高级" };
 const modeNames = { practice: "场面练习", rules: "规则学习" };
@@ -420,10 +427,44 @@ function shuffle(items) {
   return copy;
 }
 
+function midpointPercent(start, end) {
+  const startValue = Number.parseFloat(start);
+  const endValue = Number.parseFloat(end);
+  if (!Number.isFinite(startValue) || !Number.isFinite(endValue)) {
+    return end;
+  }
+  return `${((startValue + endValue) / 2).toFixed(1)}%`;
+}
+
+function mobileFieldPercent(value, axis) {
+  if (!mobileLayoutQuery.matches) return value;
+  const numeric = Number.parseFloat(value);
+  if (!Number.isFinite(numeric)) return value;
+  const scale = axis === "x" ? 1.08 : 0.98;
+  const adjusted = 50 + (numeric - 50) * scale;
+  const clamped = Math.max(4, Math.min(96, adjusted));
+  return `${clamped.toFixed(1)}%`;
+}
+
 function selectButton(buttons, index) {
   buttons.forEach((button, buttonIndex) => {
     button.classList.toggle("is-selected", buttonIndex === index);
   });
+}
+
+function syncStageLayout() {
+  const layoutName = mobileLayoutQuery.matches ? "mobile" : "desktop";
+  const layout = stageLayouts[layoutName];
+  const scale = Math.min(window.innerWidth / layout.width, window.innerHeight / layout.height);
+
+  bootScreen.dataset.layout = layoutName;
+  bootScreen.style.setProperty("--stage-width", `${layout.width}px`);
+  bootScreen.style.setProperty("--stage-height", `${layout.height}px`);
+  bootScreen.style.setProperty("--vw", `${layout.width / 100}px`);
+  bootScreen.style.setProperty("--vh", `${layout.height / 100}px`);
+  bootScreen.style.setProperty("--vmin", `${Math.min(layout.width, layout.height) / 100}px`);
+  bootScreen.style.setProperty("--vmax", `${Math.max(layout.width, layout.height) / 100}px`);
+  bootScreen.style.setProperty("--stage-scale", String(scale));
 }
 
 function armBootSequence() {
@@ -529,17 +570,23 @@ function renderField(question) {
     const isSelected = player.name === question.player;
     const isMoving = player.name === preset.moving || (!hasQuestionPlayer && isSelected && player.move);
     const moveTarget = isMoving && preset.defenseMove ? preset.defenseMove : player.move;
+    const frameXRaw = isMoving && moveTarget && player.side === "offense" ? midpointPercent(player.x, moveTarget.x) : player.x;
+    const frameYRaw = isMoving && moveTarget && player.side === "offense" ? midpointPercent(player.y, moveTarget.y) : player.y;
+    const frameX = mobileFieldPercent(frameXRaw, "x");
+    const frameY = mobileFieldPercent(frameYRaw, "y");
 
     dot.className = `field-player ${player.side}`;
     dot.classList.toggle("is-selected", isSelected);
     dot.classList.toggle("is-moving", Boolean(isMoving && moveTarget));
-    dot.style.setProperty("--x", player.x);
-    dot.style.setProperty("--y", player.y);
+    dot.style.setProperty("--frame-x", frameX);
+    dot.style.setProperty("--frame-y", frameY);
+    dot.style.setProperty("--route-start-x", mobileFieldPercent(player.x, "x"));
+    dot.style.setProperty("--route-start-y", mobileFieldPercent(player.y, "y"));
     if (moveTarget) {
-      dot.style.setProperty("--mid-x", moveTarget.midX || moveTarget.x);
-      dot.style.setProperty("--mid-y", moveTarget.midY || moveTarget.y);
-      dot.style.setProperty("--move-x", moveTarget.x);
-      dot.style.setProperty("--move-y", moveTarget.y);
+      dot.style.setProperty("--route-mid-x", mobileFieldPercent(moveTarget.midX || midpointPercent(player.x, moveTarget.x), "x"));
+      dot.style.setProperty("--route-mid-y", mobileFieldPercent(moveTarget.midY || midpointPercent(player.y, moveTarget.y), "y"));
+      dot.style.setProperty("--route-end-x", mobileFieldPercent(moveTarget.x, "x"));
+      dot.style.setProperty("--route-end-y", mobileFieldPercent(moveTarget.y, "y"));
     }
     dot.setAttribute("aria-label", player.name);
 
@@ -550,12 +597,14 @@ function renderField(question) {
     fieldPlayers.appendChild(dot);
   });
 
-  playField.style.setProperty("--ball-x0", preset.ball.x0);
-  playField.style.setProperty("--ball-y0", preset.ball.y0);
-  playField.style.setProperty("--ball-mid-x", preset.ball.midX);
-  playField.style.setProperty("--ball-mid-y", preset.ball.midY);
-  playField.style.setProperty("--ball-x1", preset.ball.x1);
-  playField.style.setProperty("--ball-y1", preset.ball.y1);
+  playField.style.setProperty("--ball-frame-x", mobileFieldPercent(preset.ball.midX || midpointPercent(preset.ball.x0, preset.ball.x1), "x"));
+  playField.style.setProperty("--ball-frame-y", mobileFieldPercent(preset.ball.midY || midpointPercent(preset.ball.y0, preset.ball.y1), "y"));
+  playField.style.setProperty("--ball-route-start-x", mobileFieldPercent(preset.ball.x0, "x"));
+  playField.style.setProperty("--ball-route-start-y", mobileFieldPercent(preset.ball.y0, "y"));
+  playField.style.setProperty("--ball-route-mid-x", mobileFieldPercent(preset.ball.midX || midpointPercent(preset.ball.x0, preset.ball.x1), "x"));
+  playField.style.setProperty("--ball-route-mid-y", mobileFieldPercent(preset.ball.midY || midpointPercent(preset.ball.y0, preset.ball.y1), "y"));
+  playField.style.setProperty("--ball-route-end-x", mobileFieldPercent(preset.ball.x1, "x"));
+  playField.style.setProperty("--ball-route-end-y", mobileFieldPercent(preset.ball.y1, "y"));
   replayFieldAnimation();
 }
 
@@ -563,6 +612,10 @@ function replayFieldAnimation() {
   playField.classList.remove("is-playing");
   void playField.offsetWidth;
   playField.classList.add("is-playing");
+  window.clearTimeout(fieldReplayTimer);
+  fieldReplayTimer = window.setTimeout(() => {
+    playField.classList.remove("is-playing");
+  }, 1550);
 }
 
 function renderQuestion() {
@@ -642,7 +695,6 @@ function enterQuiz(difficulty) {
 
 function backToDifficulty() {
   activeView = "difficulty";
-  bootScreen.classList.remove("is-quiz-mode");
   quizScreen.classList.remove("is-visible");
   quizScreen.classList.add("is-leaving");
   difficultyScreen.hidden = false;
@@ -652,6 +704,7 @@ function backToDifficulty() {
   window.setTimeout(() => {
     quizScreen.hidden = true;
     quizScreen.classList.remove("is-leaving");
+    bootScreen.classList.remove("is-quiz-mode");
   }, 260);
 }
 
@@ -699,12 +752,20 @@ quizSpeechBox.addEventListener("click", showExplanation);
 replayFieldButton.addEventListener("click", replayFieldAnimation);
 nextQuestionButton.addEventListener("click", nextQuestion);
 
-window.addEventListener("resize", scheduleResponsiveRefresh);
-window.addEventListener("orientationchange", scheduleResponsiveRefresh);
+window.addEventListener("resize", () => {
+  syncStageLayout();
+  scheduleResponsiveRefresh();
+});
+window.addEventListener("orientationchange", () => {
+  syncStageLayout();
+  scheduleResponsiveRefresh();
+});
+mobileLayoutQuery.addEventListener("change", syncStageLayout);
 window.addEventListener("pageshow", (event) => {
   if (event.persisted) {
     armBootSequence();
   }
+  syncStageLayout();
   scheduleResponsiveRefresh();
 });
 
@@ -753,4 +814,5 @@ document.addEventListener("keydown", (event) => {
 selectButton(startButtons, selectedStartIndex);
 selectButton(difficultyButtons, selectedDifficultyIndex);
 setDifficultyMode(selectedMode);
+syncStageLayout();
 armBootSequence();

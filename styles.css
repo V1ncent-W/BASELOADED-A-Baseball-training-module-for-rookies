@@ -19,6 +19,13 @@
   --gold: #f4cb5f;
   --sky: #6bc6df;
   --pixel: 4px;
+  --stage-width: 1280px;
+  --stage-height: 720px;
+  --vw: 12.8px;
+  --vh: 7.2px;
+  --vmin: 7.2px;
+  --vmax: 12.8px;
+  --stage-scale: 1;
   --arcade-font: "Zpix", "Press Start 2P", "Courier New", monospace;
   --cn-font: SimHei, "Microsoft YaHei", "Heiti SC", sans-serif;
 }
@@ -30,11 +37,15 @@
 html,
 body {
   width: 100%;
+  height: 100%;
   min-height: 100%;
   margin: 0;
 }
 
 body {
+  position: relative;
+  display: grid;
+  place-items: center;
   overflow: hidden;
   background: var(--bg);
   color: var(--ink);
@@ -46,20 +57,24 @@ button {
 }
 
 .boot-screen {
-  position: relative;
+  position: absolute;
   display: grid;
-  min-height: 100vh;
-  min-height: 100svh;
+  width: var(--stage-width);
+  height: var(--stage-height);
   place-items: center;
   overflow: hidden;
   isolation: isolate;
   background: #000;
+  transform: translate(-50%, -50%) scale(var(--stage-scale));
+  transform-origin: 50% 50%;
+  left: 50%;
+  top: 50%;
 }
 
 .upper-field-grid {
   position: absolute;
-  inset: auto -8vw 12vh;
-  height: 36vh;
+  inset: auto calc(-8 * var(--vw)) calc(12 * var(--vh));
+  height: calc(36 * var(--vh));
   background:
     linear-gradient(135deg, transparent 48%, rgba(247, 247, 241, 0.18) 48% 52%, transparent 52%) center 0 / 116px 116px,
     linear-gradient(45deg, transparent 48%, rgba(247, 247, 241, 0.14) 48% 52%, transparent 52%) center 0 / 116px 116px,
@@ -72,8 +87,8 @@ button {
 
 .stadium-grid {
   position: absolute;
-  inset: auto -8vw -18vh;
-  height: 48vh;
+  inset: auto calc(-8 * var(--vw)) calc(-18 * var(--vh));
+  height: calc(48 * var(--vh));
   background:
     linear-gradient(135deg, transparent 48%, rgba(247, 247, 241, 0.16) 48% 52%, transparent 52%) center 0 / 104px 104px,
     linear-gradient(45deg, transparent 48%, rgba(247, 247, 241, 0.13) 48% 52%, transparent 52%) center 0 / 104px 104px,
@@ -88,8 +103,8 @@ button {
   content: "";
   position: absolute;
   left: 50%;
-  bottom: 4vh;
-  width: min(46vmin, 430px);
+  bottom: calc(4 * var(--vh));
+  width: min(calc(46 * var(--vmin)), 430px);
   aspect-ratio: 1;
   transform: translateX(-50%) rotate(45deg);
   background: linear-gradient(135deg, var(--clay-dark), var(--clay));
@@ -117,10 +132,10 @@ button {
 
 .ball-trails {
   position: absolute;
-  left: -10vw;
-  top: 29vh;
-  width: 34vw;
-  height: 17vh;
+  left: calc(-10 * var(--vw));
+  top: calc(29 * var(--vh));
+  width: calc(34 * var(--vw));
+  height: calc(17 * var(--vh));
   opacity: 0;
   transform: skewX(-16deg);
   animation: none;
@@ -151,9 +166,9 @@ button {
 
 .baseball {
   position: absolute;
-  left: -14vmin;
-  top: 28vh;
-  width: clamp(56px, 11vmin, 132px);
+  left: calc(-14 * var(--vmin));
+  top: calc(28 * var(--vh));
+  width: clamp(56px, calc(11 * var(--vmin)), 132px);
   aspect-ratio: 1;
   border: var(--pixel) solid #0b0b0b;
   border-radius: 50%;
@@ -195,7 +210,7 @@ button {
   position: absolute;
   left: 50%;
   top: 45%;
-  width: min(54vmin, 520px);
+  width: min(calc(54 * var(--vmin)), 520px);
   aspect-ratio: 1;
   translate: -50% -50%;
   background: var(--ink);
@@ -207,13 +222,13 @@ button {
 
 .producer-credit {
   position: fixed;
-  right: clamp(14px, 2vw, 28px);
-  bottom: clamp(12px, 2vw, 24px);
+  right: clamp(14px, calc(2 * var(--vw)), 28px);
+  bottom: clamp(12px, calc(2 * var(--vw)), 24px);
   z-index: 12;
   margin: 0;
   color: var(--muted);
   font-family: var(--arcade-font);
-  font-size: clamp(0.68rem, 1.15vw, 0.9rem);
+  font-size: clamp(0.68rem, calc(1.15 * var(--vw)), 0.9rem);
   letter-spacing: 0;
   text-transform: lowercase;
   text-shadow: 2px 2px 0 #000;
@@ -278,7 +293,7 @@ button {
   position: absolute;
   left: 50%;
   top: 45%;
-  width: min(23vmin, 230px);
+  width: min(calc(23 * var(--vmin)), 230px);
   aspect-ratio: 1;
   translate: -50% -50%;
   background: #000;
@@ -296,7 +311,7 @@ button {
   position: absolute;
   left: 50%;
   top: 45%;
-  width: min(68vmin, 620px);
+  width: min(calc(68 * var(--vmin)), 620px);
   aspect-ratio: 1;
   translate: -50% -50%;
   opacity: 0;
@@ -339,7 +354,7 @@ button {
   position: absolute;
   left: 50%;
   top: 45%;
-  width: min(76vmin, 700px);
+  width: min(calc(76 * var(--vmin)), 700px);
   aspect-ratio: 1;
   translate: -50% -50%;
   opacity: 0;
@@ -349,7 +364,7 @@ button {
 
 .glass-burst i {
   position: absolute;
-  width: clamp(10px, 2.4vmin, 22px);
+  width: clamp(10px, calc(2.4 * var(--vmin)), 22px);
   aspect-ratio: 1;
   background: var(--ink);
   box-shadow: var(--pixel) var(--pixel) 0 #000;
@@ -366,14 +381,14 @@ button {
 
 .title-reveal {
   position: absolute;
-  left: 46.8%;
-  top: 46.8%;
-  width: min(92vw, 860px);
+  left: 38.8%;
+  top: 38.8%;
+  width: min(calc(92 * var(--vw)), 860px);
   transform: translate(-50%, 4px);
   display: grid;
   justify-items: center;
   align-content: center;
-  gap: clamp(18px, 3vh, 34px);
+  gap: clamp(18px, calc(3 * var(--vh)), 34px);
   padding: 24px 0;
   text-align: center;
   pointer-events: none;
@@ -386,7 +401,7 @@ button {
   margin: 0;
   width: 100%;
   color: var(--muted);
-  font-size: clamp(0.62rem, 1.6vw, 1rem);
+  font-size: clamp(0.62rem, calc(1.6 * var(--vw)), 1rem);
   letter-spacing: 0;
   font-family: var(--arcade-font);
   text-align: center;
@@ -400,7 +415,7 @@ button {
   width: 100%;
   color: var(--ink);
   font-family: var(--arcade-font);
-  font-size: clamp(3.8rem, 10.5vw, 9.4rem);
+  font-size: clamp(3.8rem, calc(10.5 * var(--vw)), 9.4rem);
   font-weight: 700;
   line-height: 0.92;
   letter-spacing: 0;
@@ -420,9 +435,9 @@ button {
 }
 
 .boot-screen.is-quiz-mode .title-reveal {
-  inset: 18px 26px auto auto;
+  inset: 18px 56px auto auto;
   display: block;
-  width: min(27vw, 300px);
+  width: min(calc(31 * var(--vw)), 360px);
   padding: 0;
   opacity: 1;
   transform: none;
@@ -436,18 +451,18 @@ button {
 .boot-screen.is-quiz-mode .game-title {
   max-width: none;
   width: 100%;
-  font-size: clamp(1.4rem, 2.7vw, 2.55rem);
+  font-size: clamp(1.4rem, calc(2.7 * var(--vw)), 2.55rem);
   line-height: 1;
 }
 
 .start-menu {
   position: relative;
   display: grid;
-  width: min(92vw, 860px);
-  min-height: 48vh;
+  width: min(calc(92 * var(--vw)), 860px);
+  min-height: calc(48 * var(--vh));
   place-items: center;
-  padding: clamp(20px, 5vmin, 56px);
-  margin-top: 30vh;
+  padding: clamp(20px, calc(5 * var(--vmin)), 56px);
+  margin-top: calc(30 * var(--vh));
   opacity: 0;
   transform: translateY(24px);
   animation: menuIn 520ms steps(6, end) 4250ms forwards;
@@ -469,13 +484,12 @@ button {
 }
 
 .boot-screen.is-subscreen .diamond {
-  opacity: 0;
-  visibility: hidden;
+  display: none;
 }
 
 .diamond {
   position: absolute;
-  width: min(48vmin, 430px);
+  width: min(calc(48 * var(--vmin)), 430px);
   aspect-ratio: 1;
   transform: rotate(45deg);
   background:
@@ -591,11 +605,11 @@ button {
   grid-template-columns: minmax(0, 650px) minmax(280px, 380px);
   justify-content: center;
   align-items: center;
-  gap: clamp(40px, 7vw, 96px);
+  gap: clamp(40px, calc(7 * var(--vw)), 96px);
   width: 100%;
-  min-height: 100vh;
-  min-height: 100svh;
-  padding: clamp(96px, 14vh, 150px) min(7vw, 92px) clamp(58px, 7vh, 86px);
+  min-height: calc(100 * var(--vh));
+  min-height: calc(100 * var(--vh));
+  padding: clamp(96px, calc(14 * var(--vh)), 150px) min(calc(7 * var(--vw)), 92px) clamp(58px, calc(7 * var(--vh)), 86px);
   background: transparent;
   opacity: 0;
   transform: translateY(22px);
@@ -615,8 +629,8 @@ button {
 
 .back-button {
   position: absolute;
-  left: clamp(18px, 3vw, 42px);
-  top: clamp(18px, 3vw, 38px);
+  left: clamp(18px, calc(3 * var(--vw)), 42px);
+  top: clamp(18px, calc(3 * var(--vw)), 38px);
   z-index: 16;
   display: inline-grid;
   grid-template-columns: 26px auto;
@@ -647,7 +661,7 @@ button {
   display: grid;
   grid-template-columns: 180px minmax(0, 390px);
   align-items: end;
-  gap: clamp(18px, 3vw, 34px);
+  gap: clamp(18px, calc(3 * var(--vw)), 34px);
   width: min(100%, 650px);
 }
 
@@ -839,12 +853,12 @@ button {
   margin: 0;
   font-family: var(--cn-font);
   font-weight: 700;
-  font-size: clamp(0.78rem, 1.25vw, 1rem);
+  font-size: clamp(0.78rem, calc(1.25 * var(--vw)), 1rem);
   line-height: 1.9;
 }
 
 .speech-box::after {
-  content: "▼";
+  content: "鈻?;
   position: absolute;
   right: 14px;
   bottom: 8px;
@@ -901,14 +915,14 @@ button {
   inset: 0;
   z-index: 18;
   display: grid;
-  grid-template-columns: minmax(430px, 58vw) minmax(320px, 420px);
+  grid-template-columns: minmax(430px, calc(58 * var(--vw))) minmax(320px, 420px);
   align-items: center;
   justify-content: center;
-  gap: clamp(30px, 5vw, 74px);
+  gap: clamp(30px, calc(5 * var(--vw)), 74px);
   width: 100%;
-  min-height: 100vh;
-  min-height: 100svh;
-  padding: clamp(112px, 15vh, 148px) min(6vw, 72px) clamp(48px, 6vh, 72px);
+  min-height: calc(100 * var(--vh));
+  min-height: calc(100 * var(--vh));
+  padding: clamp(84px, calc(11 * var(--vh)), 124px) min(calc(6 * var(--vw)), 72px) clamp(48px, calc(6 * var(--vh)), 72px);
   background: transparent;
   opacity: 0;
   transform: translateY(22px);
@@ -957,8 +971,8 @@ button {
 
 .quiz-back-button {
   position: absolute;
-  left: clamp(18px, 3vw, 42px);
-  top: clamp(18px, 3vw, 38px);
+  left: clamp(18px, calc(3 * var(--vw)), 42px);
+  top: clamp(18px, calc(3 * var(--vw)), 38px);
   z-index: 20;
   display: inline-grid;
   grid-template-columns: 26px auto;
@@ -970,15 +984,21 @@ button {
 
 .play-panel {
   display: grid;
-  grid-template-rows: minmax(300px, 48vh) auto;
-  gap: 22px;
+  grid-template-rows: minmax(214px, calc(31 * var(--vh))) auto;
+  gap: 12px;
   min-width: 0;
 }
 
 .play-field {
   position: relative;
   overflow: hidden;
-  min-height: 300px;
+  min-height: 220px;
+  width: min(100%, 760px);
+  aspect-ratio: 1.5;
+  margin: 0 auto;
+  --field-lift: 170px;
+  --player-size: 30px;
+  --ball-size: 18px;
   background: #050505;
   border: var(--pixel) solid var(--ink);
   box-shadow:
@@ -996,82 +1016,93 @@ button {
 
 .field-fan {
   position: absolute;
-  inset: 4% 3% 3%;
+  inset: calc(-1 * var(--field-lift)) 0 0 0;
   z-index: 0;
   pointer-events: none;
 }
 
-.fan-grass {
-  fill: #236b3d;
+.fan-outer {
+  fill: #245f39;
   stroke: var(--ink);
-  stroke-width: 1.7;
+  stroke-width: 1.6;
   vector-effect: non-scaling-stroke;
 }
 
-.fan-line,
+.fan-stripe {
+  opacity: 0.18;
+}
+
+.stripe-b,
+.stripe-d,
+.stripe-f {
+  opacity: 0.1;
+}
+
+.fan-warning {
+  opacity: 0.85;
+}
+
+.fan-infield {
+  stroke: #e8d6b5;
+  stroke-width: 0.8;
+  vector-effect: non-scaling-stroke;
+}
+
+.fan-infield-shadow {
+  opacity: 0.92;
+}
+
+.fan-basepaths,
+.fan-foul,
 .fan-arc {
   fill: none;
   stroke: var(--ink);
-  stroke-width: 1.2;
+  stroke-width: 1.1;
   vector-effect: non-scaling-stroke;
 }
 
+.fan-basepaths {
+  stroke: rgba(247, 247, 241, 0.72);
+  stroke-dasharray: 0;
+}
+
+.fan-foul {
+  stroke-width: 1.3;
+}
+
 .arc-mid {
-  opacity: 0.48;
+  opacity: 0.5;
 }
 
 .arc-deep {
-  opacity: 0.68;
+  opacity: 0.74;
+}
+
+.arc-inner {
+  opacity: 0.36;
+}
+
+.fan-baseplate {
+  fill: var(--ink);
+  stroke: #000;
+  stroke-width: 0.9;
+  shape-rendering: crispEdges;
+}
+
+.fan-mound {
+  fill: var(--ink);
+  filter: drop-shadow(var(--pixel) var(--pixel) 0 #000);
 }
 
 .field-diamond {
-  position: absolute;
-  left: 50%;
-  top: 66%;
-  width: min(42%, 310px);
-  aspect-ratio: 1;
-  height: auto;
-  transform: translate(-50%, -50%);
-  background:
-    linear-gradient(135deg, transparent 0 49%, rgba(255, 255, 255, 0.28) 49% 51%, transparent 51%),
-    linear-gradient(45deg, transparent 0 49%, rgba(255, 255, 255, 0.22) 49% 51%, transparent 51%),
-    linear-gradient(135deg, var(--clay-dark), var(--clay));
-  border: var(--pixel) solid var(--ink);
-  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
-  z-index: 2;
-}
-
-.field-base,
-.field-mound {
-  position: absolute;
-  display: block;
-  background: var(--ink);
-  box-shadow: var(--pixel) var(--pixel) 0 #000;
-}
-
-.field-base {
-  width: 8%;
-  aspect-ratio: 1;
-}
-
-.field-base.home { left: 46%; bottom: 7%; }
-.field-base.first { right: 9%; top: 49%; }
-.field-base.second { left: 46%; top: 7%; }
-.field-base.third { left: 9%; top: 49%; }
-
-.field-mound {
-  left: 45%;
-  top: 48%;
-  width: 10%;
-  aspect-ratio: 1;
-  border-radius: 50%;
+  display: none;
 }
 
 .ball-path {
   position: absolute;
-  left: var(--ball-x0, 50%);
-  top: var(--ball-y0, 75%);
-  width: 18px;
+  left: var(--ball-frame-x, var(--ball-route-start-x, 50%));
+  top: var(--ball-frame-y, var(--ball-route-start-y, 75%));
+  width: var(--ball-size);
   aspect-ratio: 1;
   transform: translate(-50%, -50%);
   border-radius: 50%;
@@ -1112,10 +1143,10 @@ button {
 
 .field-player {
   position: absolute;
-  left: var(--x);
-  top: var(--y);
-  width: 30px;
-  height: 30px;
+  left: var(--frame-x, var(--route-start-x, 50%));
+  top: var(--frame-y, var(--route-start-y, 50%));
+  width: var(--player-size);
+  height: var(--player-size);
   transform: translate(-50%, -50%);
   border: 4px solid #050505;
   border-radius: 50%;
@@ -1167,13 +1198,13 @@ button {
 
 .keyframe-badge {
   position: absolute;
-  right: 14px;
-  top: 14px;
+  right: 12px;
+  top: 12px;
   color: #000;
   background: var(--gold);
-  padding: 5px 8px;
+  padding: 3px 5px;
   font-family: var(--arcade-font);
-  font-size: 0.68rem;
+  font-size: 0.52rem;
   z-index: 6;
 }
 
@@ -1204,6 +1235,7 @@ button {
   grid-template-columns: 128px minmax(220px, 1fr);
   align-items: end;
   gap: 18px;
+  margin-top: 24px;
 }
 
 .quiz-mentor .coach-sprite {
@@ -1236,7 +1268,7 @@ button {
 }
 
 .quiz-speech-box::after {
-  content: "▼";
+  content: "鈻?;
   position: absolute;
   right: 12px;
   bottom: 7px;
@@ -1255,7 +1287,7 @@ button {
   margin: 0;
   font-family: var(--cn-font);
   font-weight: 700;
-  font-size: clamp(0.78rem, 1.15vw, 0.98rem);
+  font-size: clamp(0.78rem, calc(1.15 * var(--vw)), 0.98rem);
   line-height: 1.85;
 }
 
@@ -1277,7 +1309,7 @@ button {
   margin: 0;
   color: var(--ink);
   font-family: var(--cn-font);
-  font-size: clamp(1rem, 1.65vw, 1.34rem);
+  font-size: clamp(1rem, calc(1.65 * var(--vw)), 1.34rem);
   line-height: 1.55;
 }
 
@@ -1352,10 +1384,10 @@ button {
 
 .pass-lines {
   position: absolute;
-  left: -42vw;
-  top: 43vh;
-  width: 42vw;
-  height: 18vh;
+  left: calc(-42 * var(--vw));
+  top: calc(43 * var(--vh));
+  width: calc(42 * var(--vw));
+  height: calc(18 * var(--vh));
   transform: skewX(-14deg);
   animation: passLines 720ms steps(8, end) forwards;
 }
@@ -1377,9 +1409,9 @@ button {
 
 .pass-ball {
   position: absolute;
-  left: -10vmin;
-  top: 41vh;
-  width: clamp(58px, 9vmin, 118px);
+  left: calc(-10 * var(--vmin));
+  top: calc(41 * var(--vh));
+  width: clamp(58px, calc(9 * var(--vmin)), 118px);
   aspect-ratio: 1;
   border: var(--pixel) solid #0b0b0b;
   border-radius: 50%;
@@ -1395,26 +1427,26 @@ button {
 
 @keyframes ballFlight {
   0% {
-    left: -14vmin;
-    top: 28vh;
+    left: calc(-14 * var(--vmin));
+    top: calc(28 * var(--vh));
     transform: scale(0.28) rotate(0deg);
     filter: blur(0);
   }
   42% {
-    left: 22vw;
-    top: 31vh;
+    left: calc(22 * var(--vw));
+    top: calc(31 * var(--vh));
     transform: scale(0.74) rotate(360deg);
     filter: blur(0);
   }
   76% {
-    left: 44vw;
-    top: 38vh;
+    left: calc(44 * var(--vw));
+    top: calc(38 * var(--vh));
     transform: scale(1.85) rotate(760deg);
     filter: blur(0);
   }
   100% {
-    left: 48vw;
-    top: 42vh;
+    left: calc(48 * var(--vw));
+    top: calc(42 * var(--vh));
     transform: scale(5.4) rotate(980deg);
     filter: blur(1px);
   }
@@ -1438,11 +1470,11 @@ button {
   }
   74% {
     opacity: 1;
-    transform: translateX(34vw) skewX(-16deg) scaleX(1);
+    transform: translateX(calc(34 * var(--vw))) skewX(-16deg) scaleX(1);
   }
   100% {
     opacity: 0;
-    transform: translateX(48vw) skewX(-16deg) scaleX(0.2);
+    transform: translateX(calc(48 * var(--vw))) skewX(-16deg) scaleX(0.2);
   }
 }
 
@@ -1519,7 +1551,7 @@ button {
 
 @keyframes titleLift {
   to {
-    transform: translate(-50%, -31vh) scale(0.58);
+    transform: translate(-50%, calc(-31 * var(--vh))) scale(0.58);
   }
 }
 
@@ -1566,18 +1598,18 @@ button {
 
 @keyframes passBall {
   0% {
-    left: -10vmin;
-    top: 43vh;
+    left: calc(-10 * var(--vmin));
+    top: calc(43 * var(--vh));
     transform: scale(0.72) rotate(0deg);
   }
   55% {
-    left: 47vw;
-    top: 39vh;
+    left: calc(47 * var(--vw));
+    top: calc(39 * var(--vh));
     transform: scale(1.15) rotate(520deg);
   }
   100% {
-    left: 110vw;
-    top: 36vh;
+    left: calc(110 * var(--vw));
+    top: calc(36 * var(--vh));
     transform: scale(0.9) rotate(900deg);
   }
 }
@@ -1592,11 +1624,11 @@ button {
   }
   84% {
     opacity: 1;
-    transform: translateX(92vw) skewX(-14deg) scaleX(1);
+    transform: translateX(calc(92 * var(--vw))) skewX(-14deg) scaleX(1);
   }
   100% {
     opacity: 0;
-    transform: translateX(116vw) skewX(-14deg) scaleX(0.24);
+    transform: translateX(calc(116 * var(--vw))) skewX(-14deg) scaleX(0.24);
   }
 }
 
@@ -1614,36 +1646,36 @@ button {
 @keyframes fieldBallMove {
   0% {
     opacity: 1;
-    left: var(--ball-x0, 50%);
-    top: var(--ball-y0, 75%);
+    left: var(--ball-route-start-x, 50%);
+    top: var(--ball-route-start-y, 75%);
     transform: translate(-50%, -50%) scale(0.8);
   }
   56% {
     opacity: 1;
-    left: var(--ball-mid-x, 50%);
-    top: var(--ball-mid-y, 50%);
+    left: var(--ball-route-mid-x, 50%);
+    top: var(--ball-route-mid-y, 50%);
     transform: translate(-50%, -50%) scale(1);
   }
   100% {
     opacity: 1;
-    left: var(--ball-x1, 50%);
-    top: var(--ball-y1, 50%);
+    left: var(--ball-route-end-x, 50%);
+    top: var(--ball-route-end-y, 50%);
     transform: translate(-50%, -50%) scale(1);
   }
 }
 
 @keyframes runnerMove {
   0% {
-    left: var(--x);
-    top: var(--y);
+    left: var(--route-start-x, 50%);
+    top: var(--route-start-y, 50%);
   }
   58% {
-    left: var(--mid-x, var(--move-x, var(--x)));
-    top: var(--mid-y, var(--move-y, var(--y)));
+    left: var(--route-mid-x, var(--route-end-x, 50%));
+    top: var(--route-mid-y, var(--route-end-y, 50%));
   }
   100% {
-    left: var(--move-x, var(--x));
-    top: var(--move-y, var(--y));
+    left: var(--route-end-x, 50%);
+    top: var(--route-end-y, 50%);
   }
 }
 
@@ -1665,62 +1697,76 @@ button {
   }
 }
 
-@media (max-width: 680px) {
+@media (max-width: 760px) {
   :root {
     --pixel: 3px;
   }
 
   .title-reveal {
     gap: 14px;
-    width: min(94vw, 420px);
-    left: 46.6%;
-    top: 46%;
+    width: min(calc(98 * var(--vw)), 520px);
+    left: 32.6%;
+    top: 50%;
     transform: translate(-50%, 4px);
   }
 
   .label {
-    font-size: clamp(0.54rem, 2.5vw, 0.78rem);
+    font-size: clamp(0.72rem, calc(3.2 * var(--vw)), 1.05rem);
   }
 
   .game-title {
-    font-size: clamp(2.25rem, 11.2vw, 4.2rem);
+    font-size: clamp(3.1rem, calc(15.8 * var(--vw)), 5.8rem);
   }
 
   .start-menu {
-    min-height: 44vh;
-    margin-top: 34vh;
-    padding-top: 4vh;
+    min-height: calc(44 * var(--vh));
+    margin-top: calc(34 * var(--vh));
+    padding-top: calc(4 * var(--vh));
   }
 
   .diamond {
-    width: min(68vmin, 320px);
+    width: min(calc(68 * var(--vmin)), 320px);
   }
 
   .menu-actions {
-    width: min(100%, 330px);
+    width: min(100%, 420px);
   }
 
   .menu-actions button {
-    grid-template-columns: 28px 1fr;
-    min-height: 60px;
-    padding: 0 16px;
-    font-size: 0.9rem;
+    grid-template-columns: 42px 1fr;
+    min-height: 94px;
+    padding: 0 26px;
+    font-size: 1.42rem;
+  }
+
+  .menu-actions button .cursor {
+    border-top-width: 12px;
+    border-bottom-width: 12px;
+    border-left-width: 20px;
   }
 
   .difficulty-screen {
     grid-template-columns: 1fr;
-    gap: 22px;
+    gap: 16px;
     width: 100%;
-    min-height: 100vh;
-    min-height: 100svh;
-    align-content: start;
-    padding: 84px 18px 48px;
+    min-height: calc(100 * var(--vh));
+    min-height: calc(100 * var(--vh));
+    align-content: end;
+    padding: 70px 18px 30px;
   }
 
   .back-button {
-    min-height: 40px;
-    padding: 0 12px;
-    font-size: 0.82rem;
+    grid-template-columns: 30px auto;
+    min-height: 52px;
+    padding: 0 18px;
+    font-size: 0.98rem;
+  }
+
+  .quiz-back-button {
+    grid-template-columns: 30px auto;
+    min-height: 52px;
+    padding: 0 18px;
+    font-size: 0.98rem;
   }
 
   .coach-panel {
@@ -1728,19 +1774,34 @@ button {
     gap: 14px;
     align-items: end;
     width: 100%;
+    margin-top: -110px;
+  }
+
+  .difficulty-screen .coach-panel {
+    transform: translateY(-96px);
   }
 
   .coach-sprite {
     width: 96px;
     height: 150px;
-    transform: scale(0.58);
+    transform: scale(1.05);
     transform-origin: bottom left;
+  }
+
+  .coach-sprite .arm-right {
+    right: -64px;
   }
 
   .speech-box {
     width: 100%;
     max-width: none;
-    padding: 14px 16px;
+    min-height: 132px;
+    padding: 22px 24px 30px;
+  }
+
+  .difficulty-screen .speech-box {
+    width: calc(100% - 48px);
+    margin-left: 48px;
   }
 
   .speech-box::before {
@@ -1751,81 +1812,128 @@ button {
   }
 
   .speech-box p {
-    font-size: 0.7rem;
-    line-height: 1.85;
+    font-size: 1.18rem;
+    line-height: 1.72;
   }
 
   .difficulty-actions {
-    gap: 14px;
+    gap: 16px;
     width: 100%;
+    margin-top: 8px;
+    transform: translateY(-1%);
   }
 
   .difficulty-actions button {
-    grid-template-columns: 28px 1fr;
-    min-height: 58px;
-    padding: 0 16px;
-    font-size: 0.86rem;
+    grid-template-columns: 42px 1fr;
+    min-height: 94px;
+    padding: 0 26px;
+    font-size: 1.42rem;
+  }
+
+  .difficulty-actions button .cursor {
+    border-top-width: 12px;
+    border-bottom-width: 12px;
+    border-left-width: 20px;
   }
 
   .quiz-screen {
     grid-template-columns: 1fr;
-    gap: 18px;
-    align-content: start;
-    padding: 102px 16px 42px;
+    gap: 14px;
+    align-content: end;
+    padding: 88px 16px 28px;
     overflow-y: auto;
   }
 
   .boot-screen.is-quiz-mode .title-reveal {
-    right: 16px;
-    top: 18px;
-    width: 190px;
-  }
-
-  .boot-screen.is-quiz-mode .game-title {
-    font-size: 1.55rem;
+    display: none;
   }
 
   .play-panel {
-    width: min(100%, 620px);
+    width: min(100%, 560px);
     margin-inline: auto;
     grid-template-rows: auto auto;
-    gap: 16px;
+    gap: 12px;
+    padding-top: 10px;
   }
 
   .play-field {
     width: 100%;
     min-height: 0;
-    aspect-ratio: 1.24;
+    aspect-ratio: 1.18;
+    --field-lift: 92px;
+    --player-size: 22px;
+    --ball-size: 14px;
+    transform: translateY(-10%);
   }
 
   .field-player {
-    width: 28px;
-    height: 28px;
+    border-width: 3px;
   }
 
   .quiz-mentor {
-    grid-template-columns: 86px 1fr;
+    grid-template-columns: 104px 1fr;
     gap: 12px;
     align-items: center;
+    margin-top: 0;
+    transform: translateY(-28%);
   }
 
   .quiz-mentor .coach-sprite {
-    transform: scale(0.48);
+    transform: translateY(-24px) scale(0.56);
+    transform-origin: bottom left;
   }
 
   .quiz-speech-box {
-    min-height: 78px;
-    padding: 14px 16px 22px;
+    min-height: 108px;
+    padding: 18px 22px 20px;
   }
 
-  .quiz-speech-box p,
+  .quiz-speech-box p {
+    font-size: 1rem;
+    line-height: 1.75;
+  }
+
   .question-panel h2,
   .answer-actions button {
-    font-size: 0.82rem;
+    font-size: 0.9rem;
   }
 
   .question-panel {
+    gap: 16px;
+    margin-top: -4px;
+  }
+
+  .question-meta {
+    font-size: 1rem;
+  }
+
+  .question-panel h2 {
+    font-size: 1.18rem;
+    line-height: 1.5;
+  }
+
+  .answer-actions {
     gap: 14px;
+  }
+
+  .answer-actions button {
+    grid-template-columns: 42px 1fr;
+    min-height: 94px;
+    padding: 0 26px;
+    font-size: 1.42rem;
+    line-height: 1.5;
+  }
+
+  .answer-actions button .cursor {
+    border-top-width: 12px;
+    border-bottom-width: 12px;
+    border-left-width: 20px;
+  }
+
+  .next-question-button {
+    min-height: 58px;
+    padding: 0 20px;
+    font-size: 1rem;
   }
 }
 

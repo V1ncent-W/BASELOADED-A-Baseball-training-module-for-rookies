@@ -119,19 +119,36 @@
         <div class="play-panel">
           <div class="play-field" aria-label="棒球场场面模拟">
             <svg class="field-fan" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-              <path class="fan-grass" d="M50 92 L8 16 A70 70 0 0 1 92 16 Z" />
-              <path class="fan-arc arc-deep" d="M20 38 A48 48 0 0 1 80 38" />
-              <path class="fan-arc arc-mid" d="M30 56 A30 30 0 0 1 70 56" />
-              <path class="fan-line" d="M50 92 L8 16" />
-              <path class="fan-line" d="M50 92 L92 16" />
+              <defs>
+                <clipPath id="fan-clip">
+                  <path d="M50 96 L2 48 A67.9 67.9 0 0 1 98 48 Z" />
+                </clipPath>
+              </defs>
+              <path class="fan-outer fan-grass" d="M50 96 L2 48 A67.9 67.9 0 0 1 98 48 Z" />
+              <g clip-path="url(#fan-clip)">
+                <rect x="0" y="0" width="100" height="100" fill="#173d24" />
+                <path class="fan-stripe stripe-a" d="M-8 100 L16 44 L22 44 L-2 100 Z" fill="#2f7547" />
+                <path class="fan-stripe stripe-b" d="M10 100 L34 44 L40 44 L16 100 Z" fill="#27653f" />
+                <path class="fan-stripe stripe-c" d="M28 100 L52 44 L58 44 L34 100 Z" fill="#2f7547" />
+                <path class="fan-stripe stripe-d" d="M46 100 L70 44 L76 44 L52 100 Z" fill="#27653f" />
+                <path class="fan-stripe stripe-e" d="M64 100 L88 44 L94 44 L70 100 Z" fill="#2f7547" />
+                <path class="fan-stripe stripe-f" d="M82 100 L106 44 L112 44 L88 100 Z" fill="#27653f" />
+                <path class="fan-warning" d="M50 96 L12 58 A53.7 53.7 0 0 1 88 58 Z" fill="#8d5b35" />
+                <path class="fan-infield" d="M50 92 L33 75 L50 58 L67 75 Z" fill="#9b643f" />
+                <path class="fan-infield-shadow" d="M50 92 L38 80 L50 68 L62 80 Z" fill="#704326" />
+                <path class="fan-basepaths" d="M50 92 L33 75 M50 92 L67 75 M50 58 L33 75 M50 58 L67 75" />
+                <path class="fan-foul" d="M50 96 L2 48" />
+                <path class="fan-foul" d="M50 96 L98 48" />
+                <path class="fan-arc arc-deep" d="M2 48 A67.9 67.9 0 0 1 98 48" />
+                <path class="fan-arc arc-mid" d="M16 62 A48 48 0 0 1 84 62" />
+                <path class="fan-arc arc-inner" d="M34 78 A22 22 0 0 1 66 78" />
+                <rect class="fan-baseplate home" x="47" y="90" width="6" height="5" />
+                <rect class="fan-baseplate first" x="70" y="68" width="5" height="5" />
+                <rect class="fan-baseplate second" x="47" y="50" width="5" height="5" />
+                <rect class="fan-baseplate third" x="25" y="68" width="5" height="5" />
+                <circle class="fan-mound" cx="50" cy="73" r="4.2" />
+              </g>
             </svg>
-            <div class="field-diamond">
-              <span class="field-base home"></span>
-              <span class="field-base first"></span>
-              <span class="field-base second"></span>
-              <span class="field-base third"></span>
-              <span class="field-mound"></span>
-            </div>
             <div class="field-players" data-field-players></div>
             <span class="ball-path"></span>
             <div class="keyframe-badge">KEY FRAME</div>
